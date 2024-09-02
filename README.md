@@ -122,39 +122,6 @@ The following diagram provides an overview of the main classes and their relatio
 ![Class Diagram](img/ClassDiagram.jpg)
 
 ### Workflow
-The following outline provides a step-by-step process of the main activities and interactions within the DAO for residence management:
+The following flowchart provides a step-by-step process of the main activities and interactions within the DAO:
 
-1. **Initialize Residence**
-   - The residence is initialized with its name, total number of apartments, and any maintenance expenses.
-   - Declare the builder and set the maintenance expenses.
-
-2. **Builder Adds Apartments**
-   - The builder adds apartments to the residence, associating each with its respective owner.
-
-3. **Owners Apply for Council Roles**
-   - Apartment owners apply for council roles such as Chairman, Treasurer, or Controller.
-   - Store applications submitted by the owners.
-
-4. **Create Council Proposal**
-   - A proposal is created based on the applications received.
-   - Reset any previous votes and collect new votes from the owners.
-
-5. **Owners Vote on Council Roles**
-   - Owners cast their votes on the council roles based on the proposal.
-
-6. **Validate Votes**
-   - The system checks if all apartments have voted for every role.
-
-7. **Check Voting Completion**
-   - Determine whether all apartments have voted.
-   - If not all apartments have voted, return to the voting process.
-
-8. **Finalize Council Members**
-   - Once all votes are validated, finalize the new council members based on the voting results.
-   - Determine the winning apartments for each role.
-
-9. **Set New Council Members**
-    - Set the new council members according to the voting results.
-
-10. **End**
-    - The DAO process for the current cycle concludes, and the council members are set for the new term.
+![Flow Diagram](img/FlowChart.jpg)
