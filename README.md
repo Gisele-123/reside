@@ -2,6 +2,15 @@
 
 A DAO for managing a housing cooperative or residential building. This project is built using Rust and the Internet Computer platform, enabling efficient decision-making and proposal handling within a community of apartment owners.
 
+## Links
+
+- [Requirements](#requirements)
+- [Running the Project Locally](#running-the-project-locally)
+- [Overview](#overview)
+  - [Class Diagram](#class-diagram)
+  - [Workflow](#workflow)
+- [Commands and Examples](#commands-and-examples)
+
 ## Requirements
 
 To run this project locally, ensure you have the following tools installed:
