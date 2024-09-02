@@ -1,0 +1,36 @@
+type Apartment = record { owner : principal; name : text; number : nat32 };
+type Builder = record { id : principal; name : text; contact_info : text };
+type CouncilRole = variant { Treasurer; Chairman; Controller };
+type CouncilVoteEntry = record { votes : nat32; apartment_number : nat32 };
+type CouncilVotes = record {
+  controller_votes : vec CouncilVoteEntry;
+  chairman_votes : vec CouncilVoteEntry;
+  treasurer_votes : vec CouncilVoteEntry;
+};
+type Error = variant {
+  NotFound : record { msg : text };
+  InsufficientFunds : record { msg : text };
+};
+type MaintenanceExpense = record { name : text; amount : float64 };
+type Residence = record {
+  name : text;
+  apartments_count : nat32;
+  maintenance_expenses : vec MaintenanceExpense;
+};
+type Result = variant { Ok; Err : text };
+type Result_1 = variant { Ok : principal; Err : Error };
+service : (text, nat32, Builder, vec MaintenanceExpense) -> {
+  add_apartment : (nat32, text, principal) -> (Result);
+  apply_for_council : (nat32, CouncilRole) -> (Result);
+  finalize_council : () -> (Result);
+  get_apartments : () -> (vec Apartment) query;
+  get_council_applications : () -> (
+      vec record { principal; nat32; CouncilRole },
+    ) query;
+  get_council_members : () -> (vec record { CouncilRole; principal }) query;
+  get_council_votes : () -> (CouncilVotes) query;
+  get_residence : () -> (Residence) query;
+  make_council_proposal : () -> (Result);
+  vote_for_council : (nat32, nat32, CouncilRole) -> (Result);
+  whoami : () -> (Result_1);
+}

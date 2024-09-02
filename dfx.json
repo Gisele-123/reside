@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "canisters": {
+    "core": {
+      "type": "rust",
+      "package": "core",
+      "candid": "src/core/core.did"
+    }
+  },
+  "output_env_file": ".env"
+}
