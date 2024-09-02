@@ -56,7 +56,7 @@ This section provides the essential commands required to operate the DAO for res
 
 ### 1. Initial Deployment
 
-When deploying the DAO contract, you need to set up the residence with the following parameters: residence name, the total number of apartments, the builder's identifier (Principal), and any maintenance expenses.
+When deploying the DAO contract, you need to set up the residence with the following parameters:
 
 *Parameters:*
 - **Residence Name:** The name of the residence.
@@ -110,15 +110,9 @@ Each apartment owner must vote for every council role. Use the `vote_for_council
 
 Once all apartments have voted, call the `finalize_council` function to finalize the council members based on the voting results.
 
-**Command:**
-`dfx canister call core finalize_council`
-
 ### 7. Retrieve Council Members
 
 After finalization, retrieve the list of new council members using the `get_council_members` function.
-
-**Command:**
-`dfx canister call core get_council_members`
 
 ## Overview
 
