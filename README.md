@@ -6,10 +6,10 @@ A DAO for managing a housing cooperative or residential building. This project i
 
 - [Requirements](#requirements)
 - [Running the Project Locally](#running-the-project-locally)
+- [Commands and Examples](#commands-and-examples)
 - [Overview](#overview)
   - [Class Diagram](#class-diagram)
   - [Workflow](#workflow)
-- [Commands and Examples](#commands-and-examples)
 
 ## Requirements
 
@@ -49,50 +49,6 @@ Follow these steps to start the project on your local environment:
 ```
   npm run gen-deploy
 ```
-## Overview
-
-### Class Diagram
-The following diagram provides an overview of the main classes and their relationships within the project:
-
-![Class Diagram](img/ClassDiagram.jpg)
-
-### Workflow
-The following outline provides a step-by-step process of the main activities and interactions within the DAO for residence management:
-
-1. **Initialize Residence**
-   - The residence is initialized with its name, total number of apartments, and any maintenance expenses.
-   - Declare the builder and set the maintenance expenses.
-
-2. **Builder Adds Apartments**
-   - The builder adds apartments to the residence, associating each with its respective owner.
-
-3. **Owners Apply for Council Roles**
-   - Apartment owners apply for council roles such as Chairman, Treasurer, or Controller.
-   - Store applications submitted by the owners.
-
-4. **Create Council Proposal**
-   - A proposal is created based on the applications received.
-   - Reset any previous votes and collect new votes from the owners.
-
-5. **Owners Vote on Council Roles**
-   - Owners cast their votes on the council roles based on the proposal.
-
-6. **Validate Votes**
-   - The system checks if all apartments have voted for every role.
-
-7. **Check Voting Completion**
-   - Determine whether all apartments have voted.
-   - If not all apartments have voted, return to the voting process.
-
-8. **Finalize Council Members**
-   - Once all votes are validated, finalize the new council members based on the voting results.
-   - Determine the winning apartments for each role.
-
-9. **Set New Council Members**
-    - Set the new council members according to the voting results.
-
-10. **End**
-    - The DAO process for the current cycle concludes, and the council members are set for the new term.
 
 ## Commands and Examples
 
@@ -163,3 +119,48 @@ After finalization, retrieve the list of new council members using the `get_coun
 
 **Command:**
 `dfx canister call core get_council_members`
+
+## Overview
+
+### Class Diagram
+The following diagram provides an overview of the main classes and their relationships within the project:
+
+![Class Diagram](img/ClassDiagram.jpg)
+
+### Workflow
+The following outline provides a step-by-step process of the main activities and interactions within the DAO for residence management:
+
+1. **Initialize Residence**
+   - The residence is initialized with its name, total number of apartments, and any maintenance expenses.
+   - Declare the builder and set the maintenance expenses.
+
+2. **Builder Adds Apartments**
+   - The builder adds apartments to the residence, associating each with its respective owner.
+
+3. **Owners Apply for Council Roles**
+   - Apartment owners apply for council roles such as Chairman, Treasurer, or Controller.
+   - Store applications submitted by the owners.
+
+4. **Create Council Proposal**
+   - A proposal is created based on the applications received.
+   - Reset any previous votes and collect new votes from the owners.
+
+5. **Owners Vote on Council Roles**
+   - Owners cast their votes on the council roles based on the proposal.
+
+6. **Validate Votes**
+   - The system checks if all apartments have voted for every role.
+
+7. **Check Voting Completion**
+   - Determine whether all apartments have voted.
+   - If not all apartments have voted, return to the voting process.
+
+8. **Finalize Council Members**
+   - Once all votes are validated, finalize the new council members based on the voting results.
+   - Determine the winning apartments for each role.
+
+9. **Set New Council Members**
+    - Set the new council members according to the voting results.
+
+10. **End**
+    - The DAO process for the current cycle concludes, and the council members are set for the new term.
