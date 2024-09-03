@@ -1,3 +1,4 @@
+// Import necessary external crates and modules
 #[macro_use]
 extern crate serde;
 use candid::{Decode, Encode, Principal, CandidType};
@@ -6,9 +7,10 @@ use ic_stable_structures::{BoundedStorable, Cell, DefaultMemoryImpl, StableBTree
 use ic_cdk::{api};
 use std::{borrow::Cow, cell::RefCell};
 
+// Define type aliases for memory management
 type Memory = VirtualMemory<DefaultMemoryImpl>;
-type IdCell = Cell<u64, Memory>;
 
+// Macro to implement Storable and BoundedStorable traits for custom types
 macro_rules! impl_storable_and_bounded {
     ($t:ty, $max_size:expr) => {
         impl Storable for $t {
@@ -28,6 +30,7 @@ macro_rules! impl_storable_and_bounded {
     };
 }
 
+// Struct Definitions and Default Trait Implementations
 #[derive(candid::CandidType, Clone, Serialize, Deserialize)]
 struct Builder {
     id: Principal,
@@ -142,7 +145,7 @@ enum Error {
     InsufficientFunds { msg: String },
 }
 
-// Global state for DAO
+// Define Global State for Managing DAO data
 thread_local! {
     static MEMORY_MANAGER: RefCell<MemoryManager<DefaultMemoryImpl>> = RefCell::new(
         MemoryManager::init(DefaultMemoryImpl::default())
@@ -182,6 +185,7 @@ thread_local! {
     );
 }
 
+// Initialization function for the dApp, setting up the initial state
 #[ic_cdk::init]
 fn init(residence_name: String, apartments_count: u32, builder: Builder, maintenance_expenses: Vec<MaintenanceExpense>) {
     let residence_name_clone = residence_name.clone();
@@ -204,6 +208,7 @@ fn init(residence_name: String, apartments_count: u32, builder: Builder, mainten
     );
 }
 
+// Query function to get the current residence state
 #[ic_cdk::query]
 fn get_residence() -> Residence {
     RESIDENCE.with(|residence| {
@@ -211,6 +216,7 @@ fn get_residence() -> Residence {
     })
 }
 
+// Update function to add a new apartment to the storage
 #[ic_cdk::update]
 fn add_apartment(apartment_number: u32, apartment_name: String, owner: Principal) -> Result<(), String> {
     // Check if the caller is the Builder
@@ -247,6 +253,7 @@ fn add_apartment(apartment_number: u32, apartment_name: String, owner: Principal
     Ok(())
 }
 
+// Query function to get the list of all apartments
 #[ic_cdk::query]
 fn get_apartments() -> Vec<Apartment> {
     APARTMENT_STORAGE.with(|storage| {
@@ -254,6 +261,7 @@ fn get_apartments() -> Vec<Apartment> {
     })
 }
 
+// Update function to apply for a council role by an apartment owner
 #[ic_cdk::update]
 fn apply_for_council(apartment_number: u32, role: CouncilRole) -> Result<(), String> {
     let caller = api::caller(); // Get the caller's principal
@@ -291,6 +299,7 @@ fn apply_for_council(apartment_number: u32, role: CouncilRole) -> Result<(), Str
     }
 }
 
+// Query function to get the list of council applications
 #[ic_cdk::query]
 fn get_council_applications() -> Vec<(PrincipalWrapper, u32, CouncilRole)> {
     COUNCIL_APPLICATIONS.with(|applications| {
@@ -298,11 +307,13 @@ fn get_council_applications() -> Vec<(PrincipalWrapper, u32, CouncilRole)> {
     })
 }
 
+// Query function to get the current state of council votes
 #[ic_cdk::query]
 fn get_council_votes() -> CouncilVotes {
     COUNCIL_VOTES.with(|votes| votes.borrow().clone())
 }
 
+// Query function to get the current council members
 #[ic_cdk::query]
 fn get_council_members() -> Vec<(CouncilRole, PrincipalWrapper)> {
     COUNCIL_MEMBERS.with(|members| {
@@ -310,6 +321,7 @@ fn get_council_members() -> Vec<(CouncilRole, PrincipalWrapper)> {
     })
 }
 
+// Update function to propose a new council by resetting the votes and setting up new candidates
 #[ic_cdk::update]
 fn make_council_proposal() -> Result<(), String> {
     // Check if VOTED_APARTMENTS is empty
@@ -353,6 +365,7 @@ fn make_council_proposal() -> Result<(), String> {
     Ok(())
 }
 
+// Update function to cast a vote for a council role
 #[ic_cdk::update]
 fn vote_for_council(voter_apartment_number: u32, target_apartment_number: u32, role: CouncilRole) -> Result<(), String> {
     // Validate that the caller is the owner of the voting apartment
@@ -400,6 +413,7 @@ fn vote_for_council(voter_apartment_number: u32, target_apartment_number: u32, r
     })
 }
 
+// Update function to finalize the council after all votes are cast
 #[ic_cdk::update]
 fn finalize_council() -> Result<(), String> {
     // Validate if all apartments have voted for every role
@@ -511,6 +525,7 @@ fn finalize_council() -> Result<(), String> {
     Ok(())
 }
 
+// Function to determine the winner of a council role based on votes
 fn determine_council_role_winner(votes: &[CouncilVoteEntry]) -> Result<u32, String> {
     if votes.is_empty() {
         return Err("No candidates for this role.".to_string());
@@ -527,6 +542,7 @@ fn determine_council_role_winner(votes: &[CouncilVoteEntry]) -> Result<u32, Stri
     Ok(candidates[0].apartment_number)
 }
 
+// Update function to return the caller's principal (identity)
 #[ic_cdk::update]
 fn whoami() -> Result<Principal, Error> {
     let caller = api::caller();
@@ -535,5 +551,5 @@ fn whoami() -> Result<Principal, Error> {
 }
 
 
-// Need this to generate candid
+// Export the candid interface for the dApp
 ic_cdk::export_candid!();
