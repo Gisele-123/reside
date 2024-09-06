@@ -188,6 +188,21 @@ thread_local! {
 // Initialization function for the dApp, setting up the initial state
 #[ic_cdk::init]
 fn init(residence_name: String, apartments_count: u32, builder: Builder, maintenance_expenses: Vec<MaintenanceExpense>) {
+    // Validate residence name
+    if residence_name.is_empty() {
+        panic!("Residence name cannot be empty.");
+    }
+
+    // Validate apartments count
+    if apartments_count == 0 {
+        panic!("Apartments count must be greater than zero.");
+    }
+
+    // Optionally, validate maintenance expenses (assuming it can't be empty if provided)
+    if maintenance_expenses.is_empty() {
+        panic!("Maintenance expenses cannot be empty.");
+    }
+
     let residence_name_clone = residence_name.clone();
 
     RESIDENCE.with(|residence| {
@@ -225,6 +240,16 @@ fn add_apartment(apartment_number: u32, apartment_name: String, owner: Principal
 
     if !is_builder {
         return Err("Only the builder can add apartments.".to_string());
+    }
+
+    // Validate apartment number
+    if apartment_number == 0 {
+        return Err("Apartment number cannot be zero.".to_string());
+    }
+
+    // Validate apartment name
+    if apartment_name.is_empty() {
+        return Err("Apartment name cannot be empty.".to_string());
     }
 
     let max_apartments = RESIDENCE.with(|residence| residence.borrow().apartments_count);
