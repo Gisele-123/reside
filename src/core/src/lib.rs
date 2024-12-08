@@ -1,4 +1,3 @@
-// Import necessary external crates and modules
 #[macro_use]
 extern crate serde;
 use candid::{Decode, Encode, Principal, CandidType};
@@ -7,10 +6,9 @@ use ic_stable_structures::{BoundedStorable, Cell, DefaultMemoryImpl, StableBTree
 use ic_cdk::{api};
 use std::{borrow::Cow, cell::RefCell};
 
-// Define type aliases for memory management
 type Memory = VirtualMemory<DefaultMemoryImpl>;
 
-// Macro to implement Storable and BoundedStorable traits for custom types
+
 macro_rules! impl_storable_and_bounded {
     ($t:ty, $max_size:expr) => {
         impl Storable for $t {
@@ -30,7 +28,7 @@ macro_rules! impl_storable_and_bounded {
     };
 }
 
-// Struct Definitions and Default Trait Implementations
+
 #[derive(candid::CandidType, Clone, Serialize, Deserialize)]
 struct Builder {
     id: Principal,
@@ -41,7 +39,7 @@ struct Builder {
 impl Default for Builder {
     fn default() -> Self {
         Builder {
-            id: Principal::anonymous(), // Use Principal::anonymous as a default value
+            id: Principal::anonymous(), 
             name: String::from(""),
             contact_info: String::from(""),
         }
@@ -145,7 +143,6 @@ enum Error {
     InsufficientFunds { msg: String },
 }
 
-// Define Global State for Managing DAO data
 thread_local! {
     static MEMORY_MANAGER: RefCell<MemoryManager<DefaultMemoryImpl>> = RefCell::new(
         MemoryManager::init(DefaultMemoryImpl::default())
@@ -185,20 +182,19 @@ thread_local! {
     );
 }
 
-// Initialization function for the dApp, setting up the initial state
 #[ic_cdk::init]
 fn init(residence_name: String, apartments_count: u32, builder: Builder, maintenance_expenses: Vec<MaintenanceExpense>) {
-    // Validate residence name
+    
     if residence_name.is_empty() {
         panic!("Residence name cannot be empty.");
     }
 
-    // Validate apartments count
+    
     if apartments_count == 0 {
         panic!("Apartments count must be greater than zero.");
     }
 
-    // Optionally, validate maintenance expenses (assuming it can't be empty if provided)
+    
     if maintenance_expenses.is_empty() {
         panic!("Maintenance expenses cannot be empty.");
     }
@@ -223,7 +219,7 @@ fn init(residence_name: String, apartments_count: u32, builder: Builder, mainten
     );
 }
 
-// Query function to get the current residence state
+
 #[ic_cdk::query]
 fn get_residence() -> Residence {
     RESIDENCE.with(|residence| {
@@ -231,10 +227,9 @@ fn get_residence() -> Residence {
     })
 }
 
-// Update function to add a new apartment to the storage
 #[ic_cdk::update]
 fn add_apartment(apartment_number: u32, apartment_name: String, owner: Principal) -> Result<(), String> {
-    // Check if the caller is the Builder
+   
     let caller = api::caller();
     let is_builder = BUILDER.with(|builder| builder.borrow().id == caller);
 
@@ -242,12 +237,12 @@ fn add_apartment(apartment_number: u32, apartment_name: String, owner: Principal
         return Err("Only the builder can add apartments.".to_string());
     }
 
-    // Validate apartment number
+   
     if apartment_number == 0 {
         return Err("Apartment number cannot be zero.".to_string());
     }
 
-    // Validate apartment name
+    
     if apartment_name.is_empty() {
         return Err("Apartment name cannot be empty.".to_string());
     }
@@ -278,7 +273,6 @@ fn add_apartment(apartment_number: u32, apartment_name: String, owner: Principal
     Ok(())
 }
 
-// Query function to get the list of all apartments
 #[ic_cdk::query]
 fn get_apartments() -> Vec<Apartment> {
     APARTMENT_STORAGE.with(|storage| {
