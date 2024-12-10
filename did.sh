@@ -19,7 +19,7 @@ do
     generate_did "$canister"
 done
 
-service : {
-  some_method : (text) -> (text);
-  another_method : (nat) -> ();
-}
+# service : {
+#   some_method : (text) -> (text);
+#   another_method : (nat) -> ();
+# }
