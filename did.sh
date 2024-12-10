@@ -18,3 +18,8 @@ for canister in $(echo $CANISTERS | sed "s/,/ /g")
 do
     generate_did "$canister"
 done
+
+service : {
+  some_method : (text) -> (text);
+  another_method : (nat) -> ();
+}

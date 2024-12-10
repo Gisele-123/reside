@@ -2,7 +2,7 @@
 extern crate serde;
 use candid::{Decode, Encode, Principal, CandidType};
 use ic_stable_structures::memory_manager::{MemoryId, MemoryManager, VirtualMemory};
-use ic_stable_structures::{BoundedStorable, Cell, DefaultMemoryImpl, StableBTreeMap, Storable};
+use ic_stable_structures::{BoundedStorable, DefaultMemoryImpl, StableBTreeMap, Storable};
 use ic_cdk::{api};
 use std::{borrow::Cow, cell::RefCell};
 
