@@ -255,6 +255,7 @@ dependencies = [
  "ic-stable-structures",
  "serde",
  "serde_json",
+ "wasm-bindgen",
 ]
 
 [[package]]
